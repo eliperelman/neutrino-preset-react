@@ -6,7 +6,7 @@ const webpackMerge = require('webpack-merge').smart;
 const path = require('path');
 
 const MODULES = path.join(__dirname, 'node_modules');
-const [eslintLoader] = preset.module.preLoaders;
+const eslintLoader = preset.module.preLoaders[0];
 const babelLoader = preset.module.loaders.find(l => l.loader && l.loader.includes('babel'));
 
 eslintLoader.test = /\.jsx?$/;
