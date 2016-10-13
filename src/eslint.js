@@ -17,7 +17,7 @@ module.exports = {
     }
   },
   rules: {
-    'react/prop-types': [0],
+    'react/prop-types': ['off'],
 
     // specify whether double or single quotes should be used in JSX attributes
     // http://eslint.org/docs/rules/jsx-quotes
