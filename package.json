@@ -12,11 +12,11 @@
   "dependencies": {
     "babel-preset-react": "6.16.0",
     "babel-preset-stage-0": "6.16.0",
-    "webpack": "2.2.0-rc.3",
     "deepmerge": "1.2.0",
     "eslint-plugin-react": "6.4.1",
     "neutrino-preset-web": "2.1.0",
     "react-hot-loader": "3.0.0-beta.6",
+    "webpack": "2.2.0",
     "webpack-merge": "2.4.0"
   },
   "peerDependencies": {
