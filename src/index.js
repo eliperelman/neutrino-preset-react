@@ -5,6 +5,7 @@ const merge = require('deepmerge');
 const webpackMerge = require('webpack-merge').smart;
 const path = require('path');
 const webpack = require('webpack');
+
 const MODULES = path.join(__dirname, 'node_modules');
 const eslintLoader = preset.module.rules.find(r => r.use && r.use.includes('eslint'));
 const babelLoader = preset.module.rules.find(r => r.use && r.use.loader && r.use.loader.includes('babel'));
