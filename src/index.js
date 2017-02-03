@@ -26,7 +26,8 @@ const config = webpackMerge(preset, {
     })
   ],
   resolve: {
-    modules: [MODULES]
+    modules: [MODULES],
+    extensions: ['.jsx']
   },
   externals: {
     'react/addons': true,
