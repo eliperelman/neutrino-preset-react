@@ -4,25 +4,30 @@ const preset = require('neutrino-preset-web');
 const merge = require('deepmerge');
 const webpackMerge = require('webpack-merge').smart;
 const path = require('path');
+const webpack = require('webpack');
 
 const MODULES = path.join(__dirname, 'node_modules');
-const eslintLoader = preset.module.preLoaders[0];
-const babelLoader = preset.module.loaders.find(l => l.loader && l.loader.includes('babel'));
+const eslintLoader = preset.module.rules.find(r => r.use && r.use.includes('eslint'));
+const babelLoader = preset.module.rules.find(r => r.use && r.use.loader && r.use.loader.includes('babel'));
 
 eslintLoader.test = /\.jsx?$/;
 babelLoader.test = /\.jsx?$/;
-babelLoader.query.presets.push(require.resolve('babel-preset-stage-0'));
-babelLoader.query.presets.push(require.resolve('babel-preset-react'));
+babelLoader.use.options.presets.push(require.resolve('babel-preset-stage-0'));
+babelLoader.use.options.presets.push(require.resolve('babel-preset-react'));
 
 const config = webpackMerge(preset, {
-  eslint: {
-    configFile: path.join(__dirname, 'eslint.js')
-  },
+  plugins: [
+    new webpack.LoaderOptionsPlugin({
+      options: {
+        eslint: {
+          configFile: path.join(__dirname, 'eslint.js')
+        }
+      }
+    })
+  ],
   resolve: {
-    fallback: [MODULES]
-  },
-  resolveLoader: {
-    fallback: [MODULES]
+    modules: [MODULES],
+    extensions: ['.jsx']
   },
   externals: {
     'react/addons': true,
@@ -32,15 +37,8 @@ const config = webpackMerge(preset, {
 });
 
 if (process.env.NODE_ENV === 'development') {
-  const reactHotLoader = merge(babelLoader, {
-    loader: require.resolve('react-hot-loader'),
-    query: null
-  });
-
-  reactHotLoader.test = /\.(js|jsx)$/;
-  // react-hot-loader needs to go before babel since
-  // webpack evaluates loaders from bottom-to-top
-  config.module.loaders.unshift(reactHotLoader);
+  config.entry.index.unshift(require.resolve('react-hot-loader/patch'));
+  babelLoader.use.options.plugins.push(require.resolve('react-hot-loader/babel'));
 }
 
 module.exports = config;
